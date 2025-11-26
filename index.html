@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nilesh Patil | AWS Cloud & DevOps Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        aws: '#FF9900',
+                        dark: {
+                            900: '#0B0F19', // Deep blue-black
+                            800: '#111827',
+                            700: '#1F2937',
+                        },
+                        accent: {
+                            400: '#38bdf8', // Sky blue
+                            500: '#0ea5e9',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'fade-in-up': {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4B5563;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Grid Background Pattern */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+        
+        .timeline-bullet {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #374151; /* Gray-700 */
+            transition: all 0.3s;
+        }
+        .group:hover .timeline-bullet {
+            background-color: #0ea5e9; /* Accent-500 */
+            transform: scale(1.2);
+            box-shadow: 0 0 10px #0ea5e9;
+        }
+
+        /* Responsive Animations for Sections */
+        .section-animate {
+            opacity: 0;
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* Custom Markdown Styling for Modal */
+        /* This CSS targets the raw markdown output (which will contain special tokens) */
+        .markdown-content h2 {
+            font-size: 1.75rem; /* Increased size */
+            font-weight: 700;
+            color: #38bdf8; /* Accent-400 */
+            margin-top: 1.5rem; /* More space above headings */
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .markdown-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #e5e7eb; /* Gray-200 */
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            white-space: pre-wrap; /* Crucial for preserving text structure (paragraphs/newlines) */
+        }
+        .markdown-content ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            padding-left: 0.5rem;
+            margin-bottom: 1rem;
+            white-space: normal; /* Allow list items to wrap normally */
+        }
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .markdown-content strong {
+            color: #fff;
+        }
+        /* Style for the code blocks often generated inside markdown */
+        .markdown-content pre {
+            background-color: #1F2937;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .markdown-content code {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-300 antialiased selection:bg-accent-500 selection:text-white">
+
+    <!-- LLM Feature Modal (Prep/Enhancement) -->
+    <div id="prep-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+        <div class="glass-card rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 transform transition-transform duration-300 scale-95 opacity-0" id="prep-modal-content">
+            <div class="flex justify-between items-start mb-6 border-b border-white/10 pb-4">
+                <h2 class="text-3xl font-display font-bold text-white flex items-center gap-3" id="modal-title">
+                    <i data-lucide="brain" class="w-7 h-7 text-emerald-400" id="modal-icon"></i>
+                    <!-- Dynamic Title goes here -->
+                </h2>
+                <button onclick="closeLLMModal()" class="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10" aria-label="Close Modal">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div id="prep-loading" class="text-center py-12 hidden">
+                <i data-lucide="loader-2" class="w-8 h-8 mx-auto mb-4 animate-spin text-accent-400"></i>
+                <p class="text-lg text-gray-400">Generating content with Gemini...</p>
+            </div>
+
+            <div id="prep-error" class="text-center py-12 hidden">
+                <i data-lucide="alert-triangle" class="w-8 h-8 mx-auto mb-4 text-red-500"></i>
+                <p class="text-lg text-red-400">Error generating content. Please try again later.</p>
+            </div>
+
+            <div id="prep-output" class="markdown-content space-y-4">
+                <!-- LLM Content will be injected here as raw markdown -->
+            </div>
+            
+            <div class="mt-8 pt-4 border-t border-white/10">
+                <p class="text-xs text-gray-500">Content generated by Gemini 2.5 Flash API.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-card border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 bg-gradient-to-tr from-accent-500 to-emerald-400 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-accent-500/20">NP</div>
+                    <span class="font-display font-bold text-xl text-white tracking-tight">Nilesh<span class="text-accent-400">Patil</span></span>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="text-sm font-medium hover:text-white transition-colors">About</a>
+                    <a href="#experience" class="text-sm font-medium hover:text-white transition-colors">Experience</a>
+                    <a href="#projects" class="text-sm font-medium hover:text-white transition-colors">Projects</a>
+                    <a href="#contact" class="text-sm font-medium hover:text-white transition-colors">Contact</a>
+                    <a href="/uploaded/Nilesh Patil Dev_SRE.pdf" download class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-full border border-white/10 transition-all flex items-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i> CV
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Btn -->
+                <button class="md:hidden text-gray-300 hover:text-white" id="mobile-menu-btn">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-dark-800">
+            <div class="px-4 py-3 space-y-2">
+                <a href="#about" class="block px-3 py-2 text-base font-medium rounded-md hover:bg-white/5">About</a>
+                <a href="#experience" class="block px-3 py-2 text-base font-medium rounded-md hover:bg-white/5">Experience</a>
+                <a href="#projects" class="block px-3 py-2 text-base font-medium rounded-md hover:bg-white/5">Projects</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium rounded-md hover:bg-white/5">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="about" class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-grid">
+        <!-- Abstract Background Orbs -->
+        <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-accent-500/10 rounded-full blur-[120px] -z-10 animate-pulse-slow"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8 section-animate">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-aws/10 border border-aws/20 text-aws text-xs font-semibold uppercase tracking-wider">
+                        <i data-lucide="award" class="w-4 h-4"></i> AWS Certified Solutions Architect
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-display font-bold text-white leading-tight">
+                        Building Scalable <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-emerald-400">Cloud Infrastructure</span>
+                    </h1>
+                    
+                    <p class="text-lg text-gray-400 max-w-xl leading-relaxed">
+                        I am Nilesh Patil, a DevOps & Cloud Engineer with 4 years of experience. I specialize in automating infrastructure with Terraform, containerizing with Docker, and orchestrating with Kubernetes. My focus is on high availability and cost optimization.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="px-6 py-3 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded-lg shadow-lg shadow-accent-500/25 transition-all transform hover:-translate-y-1">
+                            Start Conversation
+                        </a>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/" target="_blank" class="p-3 glass-card rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-white" aria-label="GitHub">
+                                <i data-lucide="github" class="w-5 h-5"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/feed/?skipRedirect=true" target="_blank" class="p-3 glass-card rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-blue-400" aria-label="LinkedIn">
+                                <i data-lucide="linkedin" class="w-5 h-5"></i>
+                            </a>
+                            <a href="mailto:nileshpatil3806@gmail.com" class="p-3 glass-card rounded-lg hover:bg-white/10 transition-colors text-gray-400 hover:text-emerald-400" aria-label="Email">
+                                <i data-lucide="mail" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tech Stack Ticker -->
+                    <div class="pt-8 border-t border-white/5">
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Core Technology Proficiencies</p>
+                        <div class="flex flex-wrap gap-6 opacity-80">
+                            <!-- Cloud/IAC (AWS is fixed) -->
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="AWS">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Terraform">
+                            <!-- Container/Orchestration -->
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Docker">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Kubernetes">
+                            <!-- CI/CD & Version Control -->
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Jenkins">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" class="h-8 w-auto filter invert brightness-200 hover:grayscale-0 transition-all duration-300" title="GitHub">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Git">
+                            <!-- Monitoring (ELK/Linux) -->
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Grafana">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Prometheus">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/elasticsearch/elasticsearch-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="ELK Stack">
+                            <!-- OS (Linux) -->
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" class="h-8 w-auto hover:grayscale-0 transition-all duration-300" title="Linux">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decorative Illustration Card -->
+                <div class="relative hidden lg:flex justify-center items-center">
+                    <div class="w-80 h-80 bg-gradient-to-br from-accent-500 to-emerald-500 rounded-full opacity-5 absolute animate-float"></div>
+                    <div class="glass-card rounded-2xl p-6 w-full max-w-md shadow-2xl relative z-10 animate-fade-in-up delay-1">
+                        <p class="font-display font-bold text-lg text-white mb-4 flex items-center gap-2"><i data-lucide="server" class="w-5 h-5 text-accent-400"></i> Cloud Optimization Strategy</p>
+                        <div class="space-y-4">
+                            <div class="bg-dark-800 p-3 rounded-lg flex items-center justify-between">
+                                <span class="text-sm">Cost Reduction Target</span>
+                                <span class="text-emerald-400 font-semibold">20%</span>
+                            </div>
+                            <div class="bg-dark-800 p-3 rounded-lg flex items-center justify-between">
+                                <span class="text-sm">CI/CD Pipeline Health</span>
+                                <span class="text-accent-400 font-semibold">99.9% Uptime</span>
+                            </div>
+                            <div class="bg-dark-800 p-3 rounded-lg flex items-center justify-between">
+                                <span class="text-sm">IAC Coverage (Terraform)</span>
+                                <span class="text-aws font-semibold">100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Timeline) -->
+    <section id="experience" class="py-24 relative bg-dark-800/50 section-animate delay-1">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-display font-bold text-white mb-12 text-center">
+                <span class="text-accent-400">Work</span> History
+            </h2>
+
+            <div class="space-y-16 relative">
+                
+                <!-- Timeline: Vertical Line -->
+                <div class="absolute inset-0 ml-5 -translate-x-px md:ml-1/2 md:-translate-x-1/2 before:h-full before:w-0.5 before:bg-white/10"></div>
+
+                <!-- Job 1: Freelancing (Text Right) -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group animate-fade-in-up">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-dark-900 bg-dark-800 absolute left-4 md:left-1/2 -translate-x-1/2">
+                        <div class="timeline-bullet group-hover:bg-emerald-400"></div>
+                    </div>
+                    
+                    <div class="w-[calc(100%-44px)] md:w-[calc(50%-22px)] p-6 glass-card rounded-xl transition-all duration-300 group-odd:ml-auto group-odd:text-right group-even:mr-auto group-even:pr-8 relative">
+                        <div class="flex flex-col group-odd:items-end group-even:items-start relative z-10">
+                            <h3 class="text-xl font-semibold text-white">IT-INFRAstructure-SOLutions (Freelancer)</h3>
+                            <span class="text-sm text-gray-400 font-medium">Consulting as Freelancer | Oct 2023 - Present</span>
+                        </div>
+                        <!-- BULLETS with Enhancement Button -->
+                        <ul class="text-sm text-gray-400 mt-4 space-y-3 relative z-10">
+                            <!-- Bullet 1 -->
+                            <li class="flex items-start justify-between">
+                                <div class="flex items-start">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" title="Terraform">
+                                    <span id="bullet-1-1">Provisioned AWS infrastructure (EC2, RDS, S3, ALB) using Terraform.</span>
+                                </div>
+                                <button onclick="openLLMModal('ENHANCE', 'Bullet 1 Enhancement', document.getElementById('bullet-1-1').textContent.trim())" class="flex-shrink-0 ml-4 px-2 py-0.5 text-xs font-medium rounded-full bg-blue-500/20 hover:bg-blue-500/40 text-blue-400 transition-colors">
+                                    Enhance Impact ✨
+                                </button>
+                            </li>
+                            <!-- Bullet 2 -->
+                            <li class="flex items-start justify-between">
+                                <div class="flex items-start">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" title="Jenkins">
+                                    <span id="bullet-1-2">Built Jenkins CI/CD pipelines for 3-tier web app deployment.</span>
+                                </div>
+                                <button onclick="openLLMModal('ENHANCE', 'Bullet 2 Enhancement', document.getElementById('bullet-1-2').textContent.trim())" class="flex-shrink-0 ml-4 px-2 py-0.5 text-xs font-medium rounded-full bg-blue-500/20 hover:bg-blue-500/40 text-blue-400 transition-colors">
+                                    Enhance Impact ✨
+                                </button>
+                            </li>
+                            <!-- Bullet 3 -->
+                            <li class="flex items-start justify-between">
+                                <div class="flex items-start">
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/elasticsearch/elasticsearch-original.svg" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" title="ELK">
+                                    <span id="bullet-1-3">Implemented centralized monitoring with ELK stack and cost optimization strategies.</span>
+                                </div>
+                                <button onclick="openLLMModal('ENHANCE', 'Bullet 3 Enhancement', document.getElementById('bullet-1-3').textContent.trim())" class="flex-shrink-0 ml-4 px-2 py-0.5 text-xs font-medium rounded-full bg-blue-500/20 hover:bg-blue-500/40 text-blue-400 transition-colors">
+                                    Enhance Impact ✨
+                                </button>
+                            </li>
+                            <!-- Bullet 4 -->
+                            <li class="flex items-start justify-between">
+                                <div class="flex items-start">
+                                    <i data-lucide="repeat-2" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-aws"></i>
+                                    <span id="bullet-1-4">Configured S3 lifecycle policies and cross-region replication for disaster recovery.</span>
+                                </div>
+                                <button onclick="openLLMModal('ENHANCE', 'Bullet 4 Enhancement', document.getElementById('bullet-1-4').textContent.trim())" class="flex-shrink-0 ml-4 px-2 py-0.5 text-xs font-medium rounded-full bg-blue-500/20 hover:bg-blue-500/40 text-blue-400 transition-colors">
+                                    Enhance Impact ✨
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Job 2: Amazon (Text Left) -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group animate-fade-in-up delay-1">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-dark-900 bg-dark-800 absolute left-4 md:left-1/2 -translate-x-1/2">
+                        <div class="timeline-bullet group-hover:bg-aws"></div>
+                    </div>
+
+                    <div class="w-[calc(100%-44px)] md:w-[calc(50%-22px)] p-6 glass-card rounded-xl transition-all duration-300 group-odd:ml-auto group-odd:text-right group-even:mr-auto group-even:pr-8 relative">
+                        
+                        <div class="flex flex-col group-odd:items-end group-even:items-start relative z-10">
+                            <h3 class="text-xl font-semibold text-white">Amazon, Pune</h3>
+                            <span class="text-sm text-gray-400 font-medium">VCS Associate | Aug 2023 - Sept 2023</span>
+                        </div>
+                        <ul class="text-sm text-gray-400 mt-4 list-disc space-y-2 group-odd:list-disc group-even:list-disc group-odd:pl-5 group-even:pl-5 relative z-10">
+                            <li class="flex items-start">
+                                <i data-lucide="package-search" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-aws"></i>
+                                Trained in cloud-based tools, internal ticketing systems, and issue resolution strategies.
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="file-text" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-gray-500"></i>
+                                Practiced documentation, escalation procedures, and communication techniques for customer support.
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="users-2" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-accent-400"></i>
+                                Collaborated with team leads to understand operational standards (Training concluded due to restructuring).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Job 3: Coforge (Text Right) -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group animate-fade-in-up delay-2">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-dark-900 bg-dark-800 absolute left-4 md:left-1/2 -translate-x-1/2">
+                        <div class="timeline-bullet group-hover:bg-accent-400"></div>
+                    </div>
+                    
+                    <div class="w-[calc(100%-44px)] md:w-[calc(50%-22px)] p-6 glass-card rounded-xl transition-all duration-300 group-odd:ml-auto group-odd:text-right group-even:mr-auto group-even:pr-8 relative">
+
+                        <div class="flex flex-col group-odd:items-end group-even:items-start relative z-10">
+                            <h3 class="text-xl font-semibold text-white">Coforge Pvt. Ltd., Kolhapur</h3>
+                            <span class="text-sm text-gray-400 font-medium">Associate Team Member | May 2022 - Feb 2023</span>
+                        </div>
+                        <ul class="text-sm text-gray-400 mt-4 list-disc space-y-2 group-odd:list-disc group-even:list-disc group-odd:pl-5 group-even:pl-5 relative z-10">
+                            <li class="flex items-start">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" title="AWS">
+                                Configured EC2 instances, S3 buckets, and managed IAM roles/policies for security.
+                            </li>
+                            <li class="flex items-start">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" title="AWS">
+                                Set up **CloudWatch alarms** and dashboards to monitor system health and resolve basic issues.
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="shield-check" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-emerald-400"></i>
+                                Assisted in creating secure and scalable cloud environments.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Job 4: Infosys (Text Left) -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group animate-fade-in-up delay-3">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-dark-900 bg-dark-800 absolute left-4 md:left-1/2 -translate-x-1/2">
+                        <div class="timeline-bullet group-hover:bg-gray-500"></div>
+                    </div>
+                    
+                    <div class="w-[calc(100%-44px)] md:w-[calc(50%-22px)] p-6 glass-card rounded-xl transition-all duration-300 group-odd:ml-auto group-odd:text-right group-even:mr-auto group-even:pr-8 relative">
+
+                        <div class="flex flex-col group-odd:items-end group-even:items-start relative z-10">
+                            <h3 class="text-xl font-semibold text-white">Infosys Pvt. Ltd., Pune (Healthcare Domain)</h3>
+                            <span class="text-sm text-gray-400 font-medium">Process Executive | Jun 2021 - Jan 2022</span>
+                        </div>
+                        <ul class="text-sm text-gray-400 mt-4 list-disc space-y-2 group-odd:list-disc group-even:list-disc group-odd:pl-5 group-even:pl-5 relative z-10">
+                            <li class="flex items-start">
+                                <i data-lucide="clipboard-check" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-purple-400"></i>
+                                Audited complex healthcare claims, denials, and appeals (Aetna -CGA) for accuracy and compliance.
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="message-square-text" class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-accent-400"></i>
+                                Managed and resolved complaints and grievances from healthcare providers.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 relative section-animate delay-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-display font-bold text-white mb-12 text-center">
+                <span class="text-emerald-400">Technical</span> Projects
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1: Multi-Region DR -->
+                <div class="glass-card rounded-xl p-6 hover:border-accent-400/50 transition-all duration-300 transform hover:-translate-y-2 shadow-xl shadow-white/5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="cloud" class="w-6 h-6 text-accent-400"></i>
+                        <h3 class="text-xl font-semibold text-white">Multi-Region Disaster Recovery</h3>
+                    </div>
+                    <p id="project-desc-1" class="text-sm text-gray-400 mb-4">
+                        Implemented cross-region S3 replication and conducted failover drills to ensure high availability and RTO/RPO objectives for critical data.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs rounded-full bg-aws/20 text-aws font-medium">AWS S3</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-accent-500/20 text-accent-400 font-medium">DR/HA</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-white/10 text-gray-300 font-medium">Terraform</span>
+                    </div>
+                    <button onclick="openLLMModal('CSI', 'Multi-Region Disaster Recovery', document.getElementById('project-desc-1').textContent.trim())" class="mt-4 w-full px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 transition-colors flex items-center justify-center gap-2">
+                        Brainstorm Interview Prep ✨
+                    </button>
+                </div>
+                
+                <!-- Project 2: Centralized Monitoring -->
+                <div class="glass-card rounded-xl p-6 hover:border-accent-400/50 transition-all duration-300 transform hover:-translate-y-2 shadow-xl shadow-white/5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="monitor-dot" class="w-6 h-6 text-emerald-400"></i>
+                        <h3 class="text-xl font-semibold text-white">Centralized Monitoring with ELK</h3>
+                    </div>
+                    <p id="project-desc-2" class="text-sm text-gray-400 mb-4">
+                        Deployed and configured the **ELK Stack** (Elasticsearch, Logstash, Kibana) on EC2 instances to aggregate and visualize logs for application health and debugging.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs rounded-full bg-emerald-500/20 text-emerald-400 font-medium">ELK Stack</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-white/10 text-gray-300 font-medium">Monitoring</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-aws/20 text-aws font-medium">EC2</span>
+                    </div>
+                    <button onclick="openLLMModal('CSI', 'Centralized Monitoring with ELK', document.getElementById('project-desc-2').textContent.trim())" class="mt-4 w-full px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 transition-colors flex items-center justify-center gap-2">
+                        Brainstorm Interview Prep ✨
+                    </button>
+                </div>
+
+                <!-- Project 3: 3-Tier CI/CD Pipeline -->
+                <div class="glass-card rounded-xl p-6 hover:border-accent-400/50 transition-all duration-300 transform hover:-translate-y-2 shadow-xl shadow-white/5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="git-branch-plus" class="w-6 h-6 text-purple-400"></i>
+                        <h3 class="text-xl font-semibold text-white">3-Tier CI/CD Pipeline</h3>
+                    </div>
+                    <p id="project-desc-3" class="text-sm text-gray-400 mb-4">
+                        Developed a robust **Jenkins** pipeline to automate the build, test, and deployment of a containerized 3-tier application to an AWS ECS cluster.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs rounded-full bg-purple-500/20 text-purple-400 font-medium">Jenkins</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-aws/20 text-aws font-medium">ECS</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-white/10 text-gray-300 font-medium">Docker</span>
+                    </div>
+                    <button onclick="openLLMModal('CSI', '3-Tier CI/CD Pipeline', document.getElementById('project-desc-3').textContent.trim())" class="mt-4 w-full px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 transition-colors flex items-center justify-center gap-2">
+                        Brainstorm Interview Prep ✨
+                    </button>
+                </div>
+                
+                <!-- Project 4: NEW - ALB-NLB Traffic Distribution -->
+                <div class="glass-card rounded-xl p-6 hover:border-accent-400/50 transition-all duration-300 transform hover:-translate-y-2 shadow-xl shadow-white/5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="split-square-horizontal" class="w-6 h-6 text-yellow-400"></i>
+                        <h3 class="text-xl font-semibold text-white">ALB/NLB Traffic Distribution</h3>
+                    </div>
+                    <p id="project-desc-4" class="text-sm text-gray-400 mb-4">
+                        Architected and implemented a robust traffic distribution layer using both Application Load Balancer (ALB) and Network Load Balancer (NLB) to handle diverse application needs, including high-performance TCP traffic and HTTP routing. [Image of AWS load balancer architecture]
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 text-xs rounded-full bg-yellow-500/20 text-yellow-400 font-medium">ALB/NLB</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-aws/20 text-aws font-medium">Networking</span>
+                        <span class="px-3 py-1 text-xs rounded-full bg-white/10 text-gray-300 font-medium">Terraform</span>
+                    </div>
+                    <button onclick="openLLMModal('CSI', 'ALB/NLB Traffic Distribution', document.getElementById('project-desc-4').textContent.trim())" class="mt-4 w-full px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 transition-colors flex items-center justify-center gap-2">
+                        Brainstorm Interview Prep ✨
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Education and Contact Section (Split layout on desktop) -->
+    <section id="contact" class="py-24 relative bg-dark-800/50 section-animate delay-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Education / Info Column -->
+                <div class="lg:col-span-1 space-y-10">
+                    <div>
+                        <h3 class="text-2xl font-display font-bold text-white mb-6 flex items-center gap-2">
+                            <i data-lucide="graduation-cap" class="text-accent-400"></i> Education
+                        </h3>
+                        <div class="glass-card p-6 rounded-xl space-y-4">
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">M.B.A - Finance and HR</h4>
+                                <p class="text-sm text-gray-400">Shivaji University, Kolhapur | 2019 - 2021</p>
+                            </div>
+                            <div class="h-px bg-white/10"></div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">Bachelor of Computer Science</h4>
+                                <p class="text-sm text-gray-400">Shivaji University, Kolhapur | 2016 - 2019</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-display font-bold text-white mb-6 flex items-center gap-2">
+                            <i data-lucide="phone" class="text-emerald-400"></i> Contact Details
+                        </h3>
+                        <div class="glass-card p-6 rounded-xl space-y-3">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="mail" class="w-5 h-5 text-gray-500"></i>
+                                <a href="mailto:nileshpatil3806@gmail.com" class="hover:text-white transition-colors">nileshpatil3806@gmail.com</a>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="smartphone" class="w-5 h-5 text-gray-500"></i>
+                                <span>+91 9011187474</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-gray-500"></i>
+                                <span>Pune, Maharashtra, India</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form Column -->
+                <div class="lg:col-span-2">
+                    <h3 class="text-2xl font-display font-bold text-white mb-6 flex items-center gap-2">
+                        <i data-lucide="message-square" class="text-accent-400"></i> Send a Message
+                    </h3>
+                    <form onsubmit="event.preventDefault(); document.getElementById('formMessage').classList.remove('hidden'); this.reset();" class="glass-card p-8 rounded-xl space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <input type="text" placeholder="Your Name" required class="w-full bg-dark-800/50 border border-white/10 p-3 rounded-lg focus:ring-1 focus:ring-accent-500 focus:border-accent-500 transition-colors">
+                            <input type="email" placeholder="Your Email" required class="w-full bg-dark-800/50 border border-white/10 p-3 rounded-lg focus:ring-1 focus:ring-accent-500 focus:border-accent-500 transition-colors">
+                        </div>
+                        <input type="text" placeholder="Subject" required class="w-full bg-dark-800/50 border border-white/10 p-3 rounded-lg focus:ring-1 focus:ring-accent-500 focus:border-accent-500 transition-colors">
+                        <textarea placeholder="Your Message" rows="5" required class="w-full bg-dark-800/50 border border-white/10 p-3 rounded-lg focus:ring-1 focus:ring-accent-500 focus:border-accent-500 transition-colors"></textarea>
+                        
+                        <div id="formMessage" class="hidden text-sm p-3 rounded-lg bg-emerald-900/50 text-emerald-400 border border-emerald-400/50">
+                            Message received! This is a demo; I will contact you via your provided email shortly.
+                        </div>
+                        
+                        <button type="submit" class="w-full px-6 py-3 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-lg transition-all transform hover:-translate-y-0.5">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900/80 border-t border-white/5 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+            <p>Nilesh Patil DevOps Portfolio &copy; 2024. All Rights Reserved.</p>
+            <p class="mt-2 flex justify-center space-x-4">
+                <a href="https://www.linkedin.com/feed/?skipRedirect=true" target="_blank" class="hover:text-accent-400 transition-colors">LinkedIn</a>
+                <a href="https://github.com/" target="_blank" class="hover:text-accent-400 transition-colors">GitHub</a>
+                <a href="mailto:nileshpatil3806@gmail.com" class="hover:text-accent-400 transition-colors">Email</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close menu on nav item click (for smooth scrolling)
+        document.querySelectorAll('#mobile-menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Intersection Observer for Section Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Start the animation by removing the default opacity:0 from the section-animate class
+                    entry.target.style.opacity = '1';
+                    // The animation is already defined by the 'animation: fade-in-up ...' style
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-animate').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Gemini API Feature: Consolidated LLM Modal ---
+
+        const LLM_MODEL = 'gemini-2.5-flash-preview-09-2025';
+        const LLM_API_KEY = ""; // Canvas will provide this at runtime
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${LLM_MODEL}:generateContent?key=${LLM_API_KEY}`;
+        
+        const prepModal = document.getElementById('prep-modal');
+        const prepModalContent = document.getElementById('prep-modal-content');
+        const prepLoading = document.getElementById('prep-loading');
+        const prepOutput = document.getElementById('prep-output');
+        const prepError = document.getElementById('prep-error');
+        const modalTitleElement = document.getElementById('modal-title');
+        const modalIconElement = document.getElementById('modal-icon');
+
+        /**
+         * Opens the consolidated LLM modal for either CSI Prep or Bullet Enhancement.
+         * @param {string} type - 'CSI' or 'ENHANCE'.
+         * @param {string} featureTitle - The visible title for the modal (e.g., Project Name or "Bullet Enhancement").
+         * @param {string} queryText - The content to be analyzed (Project Description or Single Bullet Point).
+         */
+        function openLLMModal(type, featureTitle, queryText) {
+            prepModal.classList.remove('hidden');
+            prepModal.classList.add('flex');
+            
+            // Animate in the modal content
+            setTimeout(() => {
+                prepModalContent.classList.remove('scale-95', 'opacity-0');
+                prepModalContent.classList.add('scale-100', 'opacity-100');
+            }, 50);
+
+            // Clear previous content and show loading
+            prepOutput.textContent = ''; // Use textContent to strip any previous HTML
+            prepError.classList.add('hidden');
+            prepLoading.classList.remove('hidden');
+
+            // Set the modal title and icon dynamically
+            if (type === 'CSI') {
+                modalIconElement.setAttribute('data-lucide', 'brain');
+                modalIconElement.classList.remove('text-blue-400');
+                modalIconElement.classList.add('text-emerald-400');
+                modalTitleElement.innerHTML = `<i data-lucide="brain" class="w-7 h-7 text-emerald-400"></i> Interview Prep: ${featureTitle}`;
+            } else if (type === 'ENHANCE') {
+                modalIconElement.setAttribute('data-lucide', 'sparkles');
+                modalIconElement.classList.remove('text-emerald-400');
+                modalIconElement.classList.add('text-blue-400');
+                modalTitleElement.innerHTML = `<i data-lucide="sparkles" class="w-7 h-7 text-blue-400"></i> Enhance Bullet: ${queryText.substring(0, 50)}...`;
+            }
+            lucide.createIcons(); // Re-render icon
+
+            // Call the LLM with the specific type
+            fetchLLMResponse(type, featureTitle, queryText);
+        }
+
+        function closeLLMModal() {
+            // Animate out the modal content
+            prepModalContent.classList.remove('scale-100', 'opacity-100');
+            prepModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                prepModal.classList.add('hidden');
+                prepModal.classList.remove('flex');
+            }, 300);
+        }
+
+        async function fetchLLMResponse(type, featureTitle, queryText, attempt = 0) {
+            let systemPrompt;
+            let userQuery;
+
+            if (type === 'CSI') {
+                systemPrompt = `You are a Senior DevOps Interview Coach specializing in the AWS ecosystem. Your task is to analyze the user's project and generate a detailed, structured interview answer (for a 10-minute explanation) using the crucial Challenge-Solution-Impact (CSI) framework.
+
+Instructions for the response:
+1.  **Challenge:** Describe the initial problem, risk, or technical debt (e.g., poor RTO/RPO, manual deployments, lack of visibility).
+2.  **Solution:** Detail the specific technologies (Terraform, Jenkins, ECS, ELK, S3 replication, ALB/NLB) and architectural choices used to solve the challenge. Mention key configurations or code practices.
+3.  **Impact:** Quantify the results (e.g., RTO reduced by X%, deployment time decreased by Y%, cost savings of Z%, improved observability, increased throughput).
+4.  **Format:** Structure the response clearly using markdown headings (## Challenge, ## Solution, ## Impact) and bulleted lists. Ensure professional, technical language is used.
+
+Project Title: ${featureTitle}
+Project Summary: ${queryText}`;
+
+                userQuery = `Generate the CSI breakdown for the project: "${featureTitle}"`;
+                
+            } else if (type === 'ENHANCE') {
+                systemPrompt = `You are an expert CV/Resume editor specializing in DevOps and Cloud Engineering. Your task is to rewrite a given technical job bullet point to be more action-oriented, quantifiable, and focused on impact, suitable for a professional resume.
+
+Instructions for the response:
+1.  **Goal:** Rewrite the bullet point into a single, highly impactful sentence.
+2.  **Action Verb:** Start the sentence with a strong action verb (e.g., Automated, Engineered, Migrated, Optimized, Reduced).
+3.  **Quantify:** Insert quantified results or scale (e.g., "by 30%", "for 5,000 users," "saving $X," "improving RTO by Y%"). If numbers are missing, suggest what kind of metrics *could* be used (e.g., "resulting in X% faster deployments").
+4.  **Format:** Output ONLY the single, rewritten bullet point. Do not use headings or additional commentary.
+
+Original Technical Bullet: ${queryText}`;
+
+                userQuery = `Rewrite this single job bullet point for maximum resume impact: "${queryText}"`;
+            } else {
+                prepLoading.classList.add('hidden');
+                prepError.classList.remove('hidden');
+                prepOutput.classList.add('hidden');
+                prepError.innerHTML = `<i data-lucide="alert-triangle" class="w-8 h-8 mx-auto mb-4 text-red-500"></i><p class="text-lg text-red-400">Invalid feature type requested.</p>`;
+                lucide.createIcons();
+                return;
+            }
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "Could not generate a response. The model may have returned an empty result.";
+                
+                prepOutput.textContent = text; 
+
+                prepLoading.classList.add('hidden');
+                prepOutput.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("LLM API Call failed:", error);
+                prepLoading.classList.add('hidden');
+                prepError.classList.remove('hidden');
+                prepOutput.classList.add('hidden');
+
+                // Implement Exponential Backoff (Max 3 attempts)
+                if (attempt < 3) {
+                    const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
+                    console.log(`Retrying in ${delay / 1000} seconds...`);
+                    setTimeout(() => fetchLLMResponse(type, featureTitle, queryText, attempt + 1), delay);
+                } else {
+                    prepError.innerHTML = `<i data-lucide="alert-triangle" class="w-8 h-8 mx-auto mb-4 text-red-500"></i><p class="text-lg text-red-400">Failed to connect to the Gemini API after multiple retries. Please check your network.</p>`;
+                    lucide.createIcons(); // Re-render icon if needed
+                }
+            }
+        }
+        
+    </script>
+</body>
+</html>
+
